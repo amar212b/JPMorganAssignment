@@ -11,8 +11,7 @@ public class util {
 
     public static String getBaseURLValue(String key) throws IOException {
         Properties prop = new Properties();
-        FileInputStream fis = new FileInputStream(
-                "G:\\RestAssured\\APIFramework\\src\\test\\java\\resources\\global.properties");
+        FileInputStream fis = new FileInputStream(System.getProperty("user.dir")+"\\src\\test\\resources\\app.properties");
         prop.load(fis);
         return prop.getProperty(key);
 

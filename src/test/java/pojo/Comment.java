@@ -38,7 +38,8 @@ public class Comment {
     @Override
     public String toString() {
         return "{" +
-                "postId=" + postId +
+                "postId='" + postId + '\'' +
+                ",id='" + id  + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", body='" + body + '\'' +

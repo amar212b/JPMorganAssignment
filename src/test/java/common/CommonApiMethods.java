@@ -30,6 +30,14 @@ public class CommonApiMethods {
                 .post(endpoint);
     }
 
+    public static Response performPostRequest(RequestSpecification requestSpecification, String endpoint, Object requestBody) {
+        logger.info("Sending POST Request on:"+endpoint);
+        return given()
+                .spec(requestSpecification)
+                .body(requestBody)
+                .post(endpoint);
+    }
+
     public static Response performPutRequest(RequestSpecification requestSpecification, String endpoint, String requestBody) {
         logger.info("Sending PUT Request on:"+requestSpecification.toString(),endpoint);
         return given()
@@ -43,14 +51,14 @@ public class CommonApiMethods {
 
         return given()
                 .spec(requestSpecification)
-                .delete(endpoint);
+                .delete(endpoint).then().log().all().extract().response();
     }
 
     public static void validateStatusCode(Response response, int expectedStatusCode) {
         logger.info("Validate the Status code to be equal to:"+expectedStatusCode);
         logger.info(String.valueOf(response.getStatusCode()));
         Object endpoint = null;
-        response.then().assertThat().statusCode(expectedStatusCode);
+        response.then().assertThat().statusCode(expectedStatusCode).log().all();
         if (response.getStatusCode() == expectedStatusCode) {
             logger.info("request passed with a status code of {}.",response.getStatusCode());
         } else {

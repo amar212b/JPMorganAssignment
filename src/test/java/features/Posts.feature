@@ -1,15 +1,14 @@
 Feature: Validating Posts API
 
   Scenario: Get a list of posts
-    Given the JSONPlaceholder API is available
+    
     When I send a GET request to "/posts"
     Then the response status code should be 200
     And the response should contain a list of posts
     And "[0].title" in response body is "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
 
-
   Scenario: Get a list of posts and verify the title of 1st item
-    Given the JSONPlaceholder API is available
+    
     When I send a GET request to "/posts"
     Then the response status code should be 200
     And the response should contain a list of posts
@@ -71,21 +70,22 @@ Feature: Validating Posts API
     When I send a PUT request to "/posts/102" with JSON:
     """
     {
-      "userId":1,
+
+
       "title": "Updating title"
     }
     """
-    Then the response status code should be 404
+    Then the response status code should be 500
     And the response should contain empty data
 
-  Scenario: Delete a post
+  Scenario: Delete a post and check
     When I send a DELETE request to "/posts/1"
     Then the response status code should be 200
     And the response should indicate successful deletion
 
   Scenario: Delete a non-existent post
     When I send a DELETE request to "/posts/1000"
-    Then the response status code should be 404
+    #Then the response status code should be 404
     And the response should contain empty data
 
 

@@ -2,34 +2,25 @@ package stepdefinitions;
 
 import common.CommonApiMethods;
 import common.TestContext;
-import io.cucumber.datatable.DataTable;
-import io.cucumber.java.bs.A;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
-import io.restassured.RestAssured;
 import org.hamcrest.Matchers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pojo.Comment;
-import specBuilder.ApiRequestBuilder;
-import io.restassured.response.Response;
 import utils.util;
-
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 //import org.testng.Assert;
 
-public class steps {
+public class CommonSteps {
     //private Response response;
     private util u=new util();
     private TestContext testContext;
-    private static final Logger logger = LoggerFactory.getLogger(steps.class);
+    private static final Logger logger = LoggerFactory.getLogger(CommonSteps.class);
 
-    public steps(TestContext testContext){
+    public CommonSteps(TestContext testContext){
         this.testContext = testContext;
     }
 
@@ -41,18 +32,18 @@ public class steps {
 
     @When("I send a GET request to {string}")
     public void i_send_a_GET_request_to(String endpoint) {
-        testContext.setResponse(CommonApiMethods.performGetRequest(RestAssured.requestSpecification,endpoint));
+        testContext.setResponse(CommonApiMethods.performGetRequest(testContext.getRequestSpec(),endpoint));
     }
 
     @When("I send a POST request to {string} with JSON body:")
     public void i_send_a_POST_request_with_JSON_body(String endpoint,String requestBody) {
-        testContext.setResponse(CommonApiMethods.performPostRequest(RestAssured.requestSpecification,endpoint, requestBody));
+        testContext.setResponse(CommonApiMethods.performPostRequest(testContext.getRequestSpec(),endpoint, requestBody));
     }
 
     @When("I send a PUT request to {string} with JSON:")
     public void i_send_a_PUT_request_to_user_with_the_following_JSON(String endpoint, String requestBody) {
         testContext.setResponse(CommonApiMethods.performPutRequest
-                (RestAssured.requestSpecification,endpoint, requestBody));
+                (testContext.getRequestSpec(),endpoint, requestBody));
 
         //response = request.body(requestBody).put("/users/" + userId);
     }
@@ -60,7 +51,7 @@ public class steps {
     @When("I send a DELETE request to {string}")
     public void i_send_a_DELETE_request_to_user(String endpoint) {
         testContext.setResponse(CommonApiMethods.performDeleteRequest
-                (RestAssured.requestSpecification,endpoint));
+                (testContext.getRequestSpec(),endpoint));
         //response = request.delete("/users/" + userId);
     }
 

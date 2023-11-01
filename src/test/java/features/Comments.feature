@@ -2,7 +2,6 @@ Feature: Validating comments API
 
   @abc
   Scenario: Get a list of comments
-    Given the JSONPlaceholder API is available
     When I send a GET request to "/comments"
     Then the response status code should be 200
     And the response should contain a list of comments
@@ -10,7 +9,6 @@ Feature: Validating comments API
 
   @abc1
   Scenario: Get a list of comments and verify the email
-    Given the JSONPlaceholder API is available
     When I send a GET request to "/comments"
     Then the response status code should be 200
     And the response should contain a list of comments
@@ -45,12 +43,11 @@ Feature: Validating comments API
     #And the response should contain comment details for ID 11
 
   @abc99
-  Scenario: send incorrect body in post and verufy the status code
+  Scenario: send incorrect body in post and verify the status code
     When I send a POST request to "/comments" with JSON body:
     """
     {
       "commentId": 510,
-
       "name" "test",
       "email": "test@gardner.biz",
       "body": "testing test"
@@ -88,14 +85,20 @@ Feature: Validating comments API
     Then the response status code should be 200
     And the response should indicate successful deletion
 
-
   @abc41
-  Scenario: Create a new comment
+  Scenario Outline: Create a new multiple comments
     When I send a POST request to "/comments" with multiple JSON body:
-      | postId | name | email            | body         |
-      | 510    | test | test@gardner.biz | testing test |
+      | postId   | name   | email   | body   |
+      | <postId> | <name> | <email> | <body> |
     Then the response status code should be 201
-    And the response should contain the created comment details
+    And the response should contain the comment details
+      | postId   | name   | email   | body   | id   |
+      | <postId> | <name> | <email> | <body> | <id> |
+
+    Examples:
+      | postId | name | email            | body         | id  |
+      | 510    | test | test@gardner.biz | testing test | 501 |
+
 
 
 

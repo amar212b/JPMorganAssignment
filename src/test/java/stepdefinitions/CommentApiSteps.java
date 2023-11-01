@@ -7,6 +7,7 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import org.hamcrest.Matchers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,12 +41,25 @@ public class CommentApiSteps {
 
     @And("the response should contain the created comment details")
     public void the_response_should_contain_the_created_comment_details() {
-        // Add assertions to verify the presence of the created comment's details in the response
         testContext.getResponse().then().assertThat().body("postId", Matchers.equalTo(510));
         testContext.getResponse().then().assertThat().body("id", Matchers.equalTo(501));
         testContext.getResponse().then().assertThat().body("name", Matchers.equalTo("test"));
         testContext.getResponse().then().assertThat().body("email", Matchers.equalTo("test@gardner.biz"));
         testContext.getResponse().then().assertThat().body("body", Matchers.equalTo("testing test"));
+    }
+
+
+    @And("the response should contain the comment details")
+    public void the_response_should_contain_the_comment_details(DataTable dt) {
+        List<Map<String, String>> postDetails = dt.asMaps(String.class, String.class);
+        for (Map<String, String> data : postDetails) {
+            Map<String,String> result = testContext.getResponse().then().extract().body().jsonPath().get();
+            testContext.getResponse().then().assertThat().body("postId", Matchers.equalTo(Integer.parseInt(data.get("postId"),10)));
+            testContext.getResponse().then().assertThat().body("id", Matchers.equalTo(Integer.parseInt(data.get("id"),10)));
+            testContext.getResponse().then().assertThat().body("name", Matchers.equalTo(data.get("name")));
+            testContext.getResponse().then().assertThat().body("email", Matchers.equalTo(data.get("email")));
+            testContext.getResponse().then().assertThat().body("body", Matchers.equalTo(data.get("body")));
+        }
 
     }
 
@@ -57,14 +71,15 @@ public class CommentApiSteps {
 
     @When("I send a POST request to {string} with multiple JSON body:")
     public void i_send_a_POST_request_JSON_body(String endpoint, DataTable dt) {
-        List<Map<String, String>> postDetails = dt.asMaps(String.class,String.class);
+        List<Map<String, String>> postDetails = dt.asMaps(String.class, String.class);
         for (Map<String, String> data : postDetails) {
             Comment comm = new Comment();
-            comm.setpostId(Integer.parseInt(data.get("postId"),10));
+            comm.setpostId(Integer.parseInt(data.get("postId"), 10));
+            //comm.setId(Integer.parseInt(data.get("id"), 10));
             comm.setName(data.get("name"));
             comm.setEmail(data.get("email"));
             comm.setBody(data.get("body"));
-            testContext.setResponse(CommonApiMethods.performPostRequest(testContext.getRequestSpec(), endpoint, comm.toString()));
+            testContext.setResponse(CommonApiMethods.performPostRequest(testContext.getRequestSpec(), endpoint, comm));
         }
 
     }
