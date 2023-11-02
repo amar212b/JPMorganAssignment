@@ -17,17 +17,11 @@ import static org.junit.Assert.assertEquals;
 public class CommonSteps {
     //private Response response;
     private util u=new util();
-    private TestContext testContext;
+    private final TestContext testContext;
     private static final Logger logger = LoggerFactory.getLogger(CommonSteps.class);
 
     public CommonSteps(TestContext testContext){
         this.testContext = testContext;
-    }
-
-
-    @Given("the JSONPlaceholder API is available")
-    public void the_JSONPlaceholder_API_is_available() {
-
     }
 
     @When("I send a GET request to {string}")
@@ -44,7 +38,6 @@ public class CommonSteps {
     public void i_send_a_PUT_request_to_user_with_the_following_JSON(String endpoint, String requestBody) {
         testContext.setResponse(CommonApiMethods.performPutRequest
                 (testContext.getRequestSpec(),endpoint, requestBody));
-
         //response = request.body(requestBody).put("/users/" + userId);
     }
 
@@ -55,37 +48,20 @@ public class CommonSteps {
         //response = request.delete("/users/" + userId);
     }
 
-    @When("I send a custom request to {string}")
-    public void i_send_a_custom_request_to(String endpoint) {
-       // response = apiRequestBuilder.get(endpoint).execute();
-    }
-
     @Then("the response status code should be {int}")
     public void the_response_status_code_should_be(int expectedStatusCode) {
         //int actualStatusCode = response.getStatusCode();
         CommonApiMethods.validateStatusCode(testContext.getResponse(), expectedStatusCode);
     }
 
-    @Then("the response should contain a list of {string}")
-    public void the_response_should_contain_a_list_of(String key) {
-        // Implement validation for a list of items in the response.
-    }
-
-    @Then("the response should contain a {string} with ID {int}")
-    public void the_response_should_contain_a_with_ID(String key, int expectedId) {
-        // Implement validation for a specific item in the response.
-    }
-
     @And("the response should indicate successful deletion")
     public void the_response_should_indicate_successful_deletion() {
-        // Add assertions to verify that the response indicates successful deletion
         testContext.getResponse().then().assertThat().body("message", Matchers.nullValue());
     }
 
     @Then("{string} in response body is {string}")
     public void in_response_body_is(String keyValue, String Expectedvalue) {
         logger.info("Validating key value in the api body");
-
         assertEquals(u.getJsonPath(testContext.getResponse(),keyValue),Expectedvalue);
     }
 
@@ -95,7 +71,6 @@ public class CommonSteps {
         testContext.getResponse().then().assertThat().and().extract().response().body().asString().equals("{}");
         testContext.getResponse().then().assertThat().body("message",Matchers.anything());
     }
-    // Add step definitions for other scenarios, such as PUT and DELETE requests
 }
 
 

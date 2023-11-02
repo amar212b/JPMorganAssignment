@@ -11,7 +11,7 @@ import utils.util;
 import static org.junit.Assert.assertEquals;
 
 public class PostApiSteps {
-    private TestContext testContext;
+    private final TestContext testContext;
 
     public PostApiSteps(TestContext testContext) {
         this.testContext = testContext;
@@ -35,7 +35,6 @@ public class PostApiSteps {
 
     @And("the response should contain the created post details")
     public void the_response_should_contain_the_created_post_details() {
-        // Add assertions to verify the presence of the created post's details in the response
         testContext.getResponse().then().assertThat().body("userId", Matchers.equalTo(1));
         testContext.getResponse().then().assertThat().body("title", Matchers.equalTo("test post"));
         testContext.getResponse().then().assertThat().body("body", Matchers.equalTo("testing test post"));
@@ -43,7 +42,6 @@ public class PostApiSteps {
 
     @And("the response should contain the updated post details")
     public void the_response_should_contain_the_updated_post_details() {
-        // Add assertions to verify the presence of the updated post's details in the response
         testContext.getResponse().then().assertThat().body("title", Matchers.equalTo("Updating title"));
     }
 

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public class CommentApiSteps {
-    private TestContext testContext;
+    private final TestContext testContext;
 
     public CommentApiSteps(TestContext testContext) {
         this.testContext = testContext;

@@ -13,7 +13,7 @@ import utils.util;
 import static org.junit.Assert.assertEquals;
 
 public class UserApiSteps {
-    private TestContext testContext;
+    private final TestContext testContext;
 
     public UserApiSteps(TestContext testContext) {
         this.testContext = testContext;
@@ -36,7 +36,6 @@ public class UserApiSteps {
 
     @And("the response should contain the created user details")
     public void the_response_should_contain_the_created_user_details() {
-        // Add assertions to verify the presence of the created user's details in the response
         testContext.getResponse().then().assertThat().body("id", Matchers.equalTo(11));
         testContext.getResponse().then().assertThat().body("name", Matchers.equalTo("John Doe"));
         testContext.getResponse().then().assertThat().body("email", Matchers.equalTo("johndoe@example.com"));
@@ -45,7 +44,6 @@ public class UserApiSteps {
 
     @And("the response should contain the updated user details")
     public void the_response_should_contain_the_updated_user_details() {
-        // Add assertions to verify the presence of the updated user's details in the response
         testContext.getResponse().then().assertThat().body("name", Matchers.equalTo("Updating Name"));
     }
 

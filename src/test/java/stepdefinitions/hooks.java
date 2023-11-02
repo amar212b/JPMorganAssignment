@@ -52,7 +52,5 @@ public class hooks {
         logger.info("Response Base Details"+String.valueOf(responseSpec));
         //RestAssured.requestSpecification = requestSpec;
         //RestAssured.responseSpecification = responseSpec;
-
-
     }
 }
